@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql-container
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "MeuBanco123"
+      MYSQL_DATABASE: "testedb"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /data/mysql:/var/lib/mysql
+    networks:
+      - minha-rede
+
+  api-java:
+    container_name: api-java-container
+    build:
+      context: ./Api
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/testedb
+    ports:
+      - "8080:8080"
+    networks:
+      - minha-rede
+    depends_on:
+      - mysql
+
+  web-react:
+    container_name: web-react-container
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - minha-rede
+    depends_on:
+      - mysql
+      - api-java
+
+
+networks:
+  minha-rede:
+    driver: bridge

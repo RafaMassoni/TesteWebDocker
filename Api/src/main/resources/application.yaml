@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: atividade
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/testedb
+    username: root
+    password: MeuBanco123
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: db/migration
+
+
+
